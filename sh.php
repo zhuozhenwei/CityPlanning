@@ -1,6 +1,6 @@
 <?php
 // 连接数据库
-$pdo = new PDO("mysql:host=localhost;dbname=www_wecf_life", "www_wecf_life", "3Ap9ETimDmrr8pcC");
+$pdo = new PDO("mysql:host=20.255.48.74;dbname=www_wecf_life", "www_wecf_life", "3Ap9ETimDmrr8pcC");
 
 // 检查管理员是否登录
 session_start();

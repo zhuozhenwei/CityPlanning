@@ -9,8 +9,8 @@ if (isset($_SESSION['username'])) {
 // 数据库配置
 $host = 'localhost'; 
 $dbname = 'www_wecf_life';  
-$user = 'root';
-$pass = '410926';
+$user = 'www_wecf_life';
+$pass = '3Ap9ETimDmrr8pcC';
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $user, $pass);

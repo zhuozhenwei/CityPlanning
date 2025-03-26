@@ -12,7 +12,7 @@ $username = $_SESSION['username'];
 
 // 连接数据库
 try {
-    $pdo = new PDO('mysql:host=localhost;dbname=www_wecf_life', 'root', '410926');
+    $pdo = new PDO('mysql:host=20.255.48.74;dbname=www_wecf_life', 'www_wecf_life', '3Ap9ETimDmrr8pcC');
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     // 删除帖子功能

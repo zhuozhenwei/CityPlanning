@@ -3,9 +3,9 @@ session_start();
 ini_set('date.timezone', 'Asia/Shanghai');
 
 // 数据库连接信息
-$servername = "localhost";
-$username_db = "root";
-$password_db = "410926";
+$servername = "20.255.48.74";
+$username_db = "www_wecf_life";
+$password_db = "3Ap9ETimDmrr8pcC";
 $dbname = "www_wecf_life";
 
 try {

@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!isset($error) && !empty($replyContent)) {
         // 连接数据库
         try {
-            $pdo = new PDO('mysql:host=localhost;dbname=www_wecf_life', 'www_wecf_life', '3Ap9ETimDmrr8pcC');
+            $pdo = new PDO('mysql:host=20.255.48.74;dbname=www_wecf_life', 'www_wecf_life', '3Ap9ETimDmrr8pcC');
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
             // 插入回复到数据库

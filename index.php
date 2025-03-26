@@ -13,10 +13,10 @@ if (!isset($_SESSION['username'])) { // 检查会话中是否存在username
 $username = $_SESSION['username'];
 
 // 数据库配置
-$host = 'localhost';
+$host = '20.255.48.74';
 $dbname = 'www_wecf_life';
-$user = 'root';
-$pass = '410926';
+$user = 'www_wecf_life';
+$pass = '3Ap9ETimDmrr8pcC';
 
 try {
     // 创建 PDO 数据库连接
@@ -41,6 +41,14 @@ $userInfo = $stmt->fetch(PDO::FETCH_ASSOC);
 $stmt = $pdo->prepare("SELECT has_played, earnings, land_type_1_count, land_type_2_count, land_type_3_count, land_type_4_count,land_type_1_area, land_type_2_area, land_type_3_area, land_type_4_area FROM game_status WHERE user_id = ?");
 $stmt->execute([$userInfo['id']]);
 $gameStatus = $stmt->fetch(PDO::FETCH_ASSOC);
+
+// 如果 $gameStatus 是 false 或未定义，则初始化为默认数组
+$gameStatus = is_array($gameStatus) ? $gameStatus : [
+    'land_type_1_count' => 0,
+    'land_type_2_count' => 0,
+    'land_type_3_count' => 0,
+    'land_type_4_count' => 0
+];
 
 //if (!$gameStatus) {
 //    $stmt = $pdo->prepare("INSERT INTO game_status (user_id, has_played, earnings, land_type_1_count, land_type_2_count, land_type_3_count, land_type_4_count) VALUES (?, FALSE, 0.00,0,0,0,0)");
@@ -425,7 +433,7 @@ $gameStatus = $stmt->fetch(PDO::FETCH_ASSOC);
             <div class="titlestyle">
                 <h2>本次游戏数据报告</h2>
             </div>
-<!--            <p>您已经完成了游戏，本次共收益为：--><?php //echo $gameStatus['earnings']; ?><!-- 元</p>-->
+            <!--            <p>您已经完成了游戏，本次共收益为：--><?php //echo $gameStatus['earnings']; ?><!-- 元</p>-->
             <div style="display: flex; justify-content: center; flex-wrap: wrap;">
                 <div id="chart1" style="width: 400px; height: 400px"></div>
                 <h3>每类地块面积变化</h3>

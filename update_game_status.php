@@ -11,10 +11,10 @@ $land_type_2_count = $_POST['land_type_2_count'] ?? 0;
 $land_type_3_count = $_POST['land_type_3_count'] ?? 0;
 $land_type_4_count = $_POST['land_type_4_count'] ?? 0;
 
-$host = 'localhost';
+$host = '20.255.48.74';
 $dbname = 'www_wecf_life';
-$user = 'root';
-$pass = '410926';
+$user = 'www_wecf_life';
+$pass = '3Ap9ETimDmrr8pcC';
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $user, $pass);

@@ -60,7 +60,7 @@
             <img src="./图片/GZB618ZEJ$GRWK{IGX94{2E.jpg" alt="" id="logo">
         </div>
         <h1 style="font-size: 3em; margin-top: -50px;">胜&nbsp;&nbsp;利</h1>
-        <a style="font-size: 3em;">当前得分：<?php echo $_SESSION['score'] ?? '0'; ?></a>
+<!--        <a style="font-size: 3em;">当前得分：</a>-->
         
         <form>
             <td>

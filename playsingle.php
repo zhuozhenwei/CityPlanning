@@ -7,10 +7,10 @@ if (!isset($_SESSION['username'])) {
     $_SESSION['username'] = '';
 }
 $username = $_SESSION['username'];
-$host = 'localhost';
+$host = '20.255.48.74';
 $dbname = 'www_wecf_life';
-$user = 'root';
-$pass = '410926';
+$user = 'www_wecf_life';
+$pass = '3Ap9ETimDmrr8pcC';
 //  $conn = mysqli_connect($host,$name,$pwd,$dbname);
 //   $link=mysqli_select_db($conn,'users');
 
@@ -493,7 +493,7 @@ $_SESSION['Token'] = md5($module . '#$@%!^*' . $time);
             if (money >= 200) { // 成功
                 var round1 = round;
                 <?php session_start();$_SESSION['updating'] = 'true'; ?>;
-                window.location.replace("./judge.php?score=" + money + "&module=" + <?php echo $module; ?> +"&timestamp=" + <?php echo $time; ?> );
+                window.location.replace("./youwin.php?score=" + money + "&module=" + <?php echo $module; ?> +"&timestamp=" + <?php echo $time; ?> );
                 // window.location.replace("./youwin.php");
             } else {
                 window.location.replace("./youlose.php");
