@@ -7,7 +7,7 @@ if (isset($_SESSION['username'])) {
 }
 
 // 数据库配置
-$host = 'localhost'; 
+$host = '20.255.48.74';
 $dbname = 'www_wecf_life';  
 $user = 'www_wecf_life';
 $pass = '3Ap9ETimDmrr8pcC';
@@ -26,14 +26,12 @@ if (isset($_POST['submit'])) {
     if (empty($username) || empty($password)) {
         $error = "请填写全部字段";
     } else {
-        // 对密码进行 MD5 哈希
-        $hashedPassword = md5($password);
 
         // 查询数据库以验证用户名和密码
         $stmt = $pdo->prepare("SELECT * FROM users WHERE username = :username AND password = :password");
         $stmt->execute([
             'username' => $username,
-            'password' => $hashedPassword
+            'password' => $password
         ]);
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 

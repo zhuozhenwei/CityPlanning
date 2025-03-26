@@ -11,21 +11,53 @@ $host = '20.255.48.74';
 $dbname = 'www_wecf_life';
 $user = 'www_wecf_life';
 $pass = '3Ap9ETimDmrr8pcC';
-//  $conn = mysqli_connect($host,$name,$pwd,$dbname);
-//   $link=mysqli_select_db($conn,'users');
 
 try {
-    // 创建 PDO 数据库连接
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $user, $pass);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // 抛出 PDOException 异常
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
-    die("数据库连接失败: " . $e->getMessage());
+    echo "连接失败: " . $e->getMessage();
+    exit();
 }
+
 // 获取用户的个人信息
 $stmt = $pdo->prepare("SELECT * FROM users WHERE username = ?");
 $stmt->execute([$username]);
 $userInfo = $stmt->fetch(PDO::FETCH_ASSOC);
 
+// 处理AJAX请求更新游戏状态
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $land_type_1_count = $_POST['land_type_1_count'] ?? 0;
+    $land_type_2_count = $_POST['land_type_2_count'] ?? 0;
+    $land_type_3_count = $_POST['land_type_3_count'] ?? 0;
+    $land_type_4_count = $_POST['land_type_4_count'] ?? 0;
+
+    try {
+        // 更新游戏状态
+        $updateStmt = $pdo->prepare("UPDATE game_status SET 
+                                    land_type_1_count = ?, 
+                                    land_type_2_count = ?, 
+                                    land_type_3_count = ?, 
+                                    land_type_4_count = ? 
+                                    WHERE username = ?");
+        $updateStmt->execute([
+            $land_type_1_count,
+            $land_type_2_count,
+            $land_type_3_count,
+            $land_type_4_count,
+            $username
+        ]);
+
+        echo json_encode(['status' => 'success', 'message' => '游戏状态更新成功']);
+    } catch (PDOException $e) {
+        echo json_encode(['status' => 'error', 'message' => '更新失败: ' . $e->getMessage()]);
+    }
+    exit;
+}
+
+$module = mt_rand(100000, 999999);
+$time = time();
+$_SESSION['Token'] = md5($module . '#$@%!^*' . $time);
 ?>
 <html lang="en">
 
@@ -623,28 +655,28 @@ $_SESSION['Token'] = md5($module . '#$@%!^*' . $time);
         document.getElementById("money").innerHTML = money;
         document.getElementById('round').innerHTML = ++round;
 
-        // 发送 AJAX 请求，更新数据库
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", "update_game_status.php", true);
-        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        // 使用AJAX更新游戏状态
+        var formData = new FormData();
+        formData.append('land_type_1_count', flags[0]);
+        formData.append('land_type_2_count', flags[1]);
+        formData.append('land_type_3_count', flags[2]);
+        formData.append('land_type_4_count', flags[3]);
 
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-                var response = JSON.parse(xhr.responseText);
-                if (response.status === "success") {
-                    console.log("数据库更新成功:", response.message);
+        fetch(window.location.href, {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    console.log('游戏状态更新成功:', data.message);
                 } else {
-                    console.error("数据库更新失败:", response.message);
+                    console.error('游戏状态更新失败:', data.message);
                 }
-            }
-        };
-
-        var data = "land_type_1_count=" + flags[0] +
-            "&land_type_2_count=" + flags[1] +
-            "&land_type_3_count=" + flags[2] +
-            "&land_type_4_count=" + flags[3];
-
-        xhr.send(data);
+            })
+            .catch(error => {
+                console.error('请求失败:', error);
+            });
 
         check(document.getElementById("round").innerHTML);
     }

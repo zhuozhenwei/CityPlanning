@@ -21,25 +21,42 @@ try {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = $_POST['username'];
     $realname = $_POST['realname'];
-    $grade = $_POST['grade'];
-    $class = $_POST['class'];
     $phone = $_POST['phone'];
     $mail = $_POST['mail'];
-    $password = md5($_POST['password']); // 使用 MD5 加密密码
-
+    $password = ($_POST['password']);
 
     // 防止重复注册
-    $stmt = $pdo->prepare("SELECT * FROM pending_users WHERE username = ?");
+    $stmt = $pdo->prepare("SELECT * FROM users WHERE username = ?");
     $stmt->execute([$username]);
     if ($stmt->rowCount() > 0) {
-        $error = "该用户名已注册，请等待管理员审核。";
+        $error = "该用户名已注册";
     } else {
-        // 插入待审核用户数据
-        $stmt = $pdo->prepare("INSERT INTO pending_users (username, realname, grade, class, phone, mail, password,  status, registration_date) 
-                               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->execute([$username, $realname, $grade, $class, $phone, $mail, $password, 'pending', date('Y-m-d H:i:s')]);
+        try {
+            // 插入待审核用户数据
+            $stmt = $pdo->prepare("INSERT INTO users 
+                (username, realname, phone, mail, password, gender, birth,  registration_date) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmt->execute([
+                $username,
+                $realname,
+                $phone,
+                $mail,
+                $password,
+                $_POST['gender'],
+                $_POST['birth'],
+                date('Y-m-d H:i:s')
+            ]);
 
-        $success = "注册成功，等待管理员审核通过后可以登录。";
+            // 在数据库中初始化游戏数据
+            $stmt = $pdo->prepare("INSERT INTO game_status 
+                (land_type_1_count,land_type_2_count,land_type_3_count,land_type_4_count,land_type_1_area,land_type_2_area,land_type_3_area,land_type_4_area,username) 
+                VALUES (?,?,?,?,?)");
+            $stmt->execute([0,0,0,0,0,0,0,0,$username]);
+
+            $success = "注册成功，可以登录";
+        } catch (PDOException $e) {
+            $error = "注册失败: " . $e->getMessage();
+        }
     }
 }
 

@@ -38,8 +38,8 @@ $stmt->execute([$username]);
 $userInfo = $stmt->fetch(PDO::FETCH_ASSOC);
 
 // 获取用户的游戏状态和收益信息
-$stmt = $pdo->prepare("SELECT has_played, earnings, land_type_1_count, land_type_2_count, land_type_3_count, land_type_4_count,land_type_1_area, land_type_2_area, land_type_3_area, land_type_4_area FROM game_status WHERE user_id = ?");
-$stmt->execute([$userInfo['id']]);
+$stmt = $pdo->prepare("SELECT land_type_1_count, land_type_2_count, land_type_3_count, land_type_4_count,land_type_1_area, land_type_2_area, land_type_3_area, land_type_4_area FROM game_status WHERE username = ?");
+$stmt->execute([$username]);
 $gameStatus = $stmt->fetch(PDO::FETCH_ASSOC);
 
 // 如果 $gameStatus 是 false 或未定义，则初始化为默认数组
@@ -373,8 +373,6 @@ $gameStatus = is_array($gameStatus) ? $gameStatus : [
         <p class="user-info-detail"><strong>用户名:</strong> <?php echo htmlspecialchars($userInfo['username']); ?></p>
         <p class="user-info-detail"><strong>真实姓名:</strong> <?php echo htmlspecialchars($userInfo['realname']); ?>
         </p>
-        <p class="user-info-detail"><strong>性别:</strong> <?php echo htmlspecialchars($userInfo['grade']); ?></p>
-        <p class="user-info-detail"><strong>年龄:</strong> <?php echo htmlspecialchars($userInfo['class']); ?></p>
         <p class="user-info-detail"><strong>电话:</strong> <?php echo htmlspecialchars($userInfo['phone']); ?></p>
         <p class="user-info-detail"><strong>邮箱:</strong> <?php echo htmlspecialchars($userInfo['mail']); ?></p>
 

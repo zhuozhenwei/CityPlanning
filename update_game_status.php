@@ -21,8 +21,8 @@ try {
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     // 获取用户ID
-    $stmt = $pdo->prepare("SELECT id FROM users WHERE username = :username");
-    $stmt->execute([':username' => $username]);
+    $stmt = $pdo->prepare("SELECT id FROM users WHERE username = ?");
+    $stmt->execute([$username]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if (!$user) {
@@ -34,20 +34,14 @@ try {
     // 更新 game_status 表
     $stmt = $pdo->prepare("
         UPDATE game_status 
-        SET land_type_1_count = :land_type_1_count,
-            land_type_2_count = :land_type_2_count,
-            land_type_3_count = :land_type_3_count,
-            land_type_4_count = :land_type_4_count
-        WHERE user_id = :user_id
+        SET land_type_1_count = ?,
+            land_type_2_count = ?,
+            land_type_3_count = ?,
+            land_type_4_count = ?
+        WHERE user_id = ?
     ");
 
-    $stmt->execute([
-        ':land_type_1_count' => $land_type_1_count,
-        ':land_type_2_count' => $land_type_2_count,
-        ':land_type_3_count' => $land_type_3_count,
-        ':land_type_4_count' => $land_type_4_count,
-        ':user_id' => $user_id
-    ]);
+    $stmt->execute([$land_type_1_count,$land_type_2_count,$land_type_3_count,$land_type_4_count, $user_id]);
 
     echo json_encode(["status" => "success", "message" => "更新成功"]);
 } catch (PDOException $e) {
