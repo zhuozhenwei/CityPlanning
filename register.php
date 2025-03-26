@@ -50,8 +50,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // 在数据库中初始化游戏数据
             $stmt = $pdo->prepare("INSERT INTO game_status 
                 (land_type_1_count,land_type_2_count,land_type_3_count,land_type_4_count,land_type_1_area,land_type_2_area,land_type_3_area,land_type_4_area,username) 
-                VALUES (?,?,?,?,?)");
-            $stmt->execute([0,0,0,0,0,0,0,0,$username]);
+                VALUES (?,?,?,?,?,?,?,?,?)");
+            $stmt->execute([0, 0, 0, 0, 0, 0, 0, 0, $username]);
 
             $success = "注册成功，可以登录";
         } catch (PDOException $e) {
@@ -64,9 +64,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>用户注册</title>
     <style>
         /* 通用样式 */
@@ -75,10 +76,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             margin: 0;
             padding: 0;
             background-color: #f7f7f7;
+            font-size: 16px;
         }
 
         header {
-            background-color: #ADD8E6; /* 紫色背景 */
+            background-color: #ADD8E6;
             padding: 10px;
             text-align: center;
         }
@@ -89,50 +91,60 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         header h1 {
-            font-size: 24px;
-            color: white; /* 白色文字 */
+            font-size: 1.5rem;
+            color: white;
+            margin: 0;
+            padding: 10px 0;
         }
 
         .form-container {
-            padding: 20px;
+            padding: 15px;
             background-color: white;
-            margin: 30px auto;
-            width: 40%;
+            margin: 15px auto;
+            width: 90%;
+            max-width: 500px;
             border-radius: 5px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .form-group {
             display: flex;
-            align-items: center;
+            flex-direction: column;
             margin-bottom: 15px;
         }
 
         .form-group label {
-            flex: 0 0 100px; /* 左侧标签固定宽度 */
-            margin-right: 15px; /* 左侧标签与右侧输入框的间隔 */
-            text-align: right;
-            font-size: 16px;
+            margin-bottom: 8px;
+            font-size: 1rem;
             color: #333;
         }
 
-        .form-group input, .form-group select, .form-group button {
-            flex: 1; /* 右侧输入框和按钮占据剩余空间 */
-            padding: 10px;
+        .form-group input,
+        .form-group select,
+        .form-group button {
+            width: 100%;
+            padding: 12px;
             border: 1px solid #ccc;
             border-radius: 5px;
-            font-size: 16px;
+            font-size: 1rem;
+            box-sizing: border-box;
         }
 
         .form-group .gender {
             display: flex;
-            gap: 10px;
+            gap: 15px;
+            margin-top: 8px;
         }
 
         .form-group .gender label {
-            flex: none;
+            display: flex;
+            align-items: center;
+            margin: 0;
+        }
+
+        .form-group .gender input {
+            width: auto;
             margin-right: 5px;
-            gap: 5px;
         }
 
         .form-group button {
@@ -140,6 +152,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             color: white;
             border: none;
             cursor: pointer;
+            padding: 12px;
+            font-size: 1rem;
+            margin-top: 10px;
         }
 
         .form-group button:hover {
@@ -148,13 +163,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         .login-link {
             text-align: center;
-            margin-top: 10px;
+            margin-top: 15px;
         }
 
         .login-link a {
             color: #007bff;
             text-decoration: none;
-            font-size: 14px;
+            font-size: 0.9rem;
         }
 
         .login-link a:hover {
@@ -164,75 +179,125 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         .error {
             color: red;
             margin-bottom: 10px;
+            font-size: 0.9rem;
         }
 
         .success {
             color: green;
             margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+
+        /* 移动端特定样式 */
+        @media (min-width: 768px) {
+            .form-group {
+                flex-direction: row;
+                align-items: center;
+            }
+
+            .form-group label {
+                flex: 0 0 100px;
+                margin-right: 15px;
+                margin-bottom: 0;
+                text-align: right;
+            }
+
+            .form-group input,
+            .form-group select,
+            .form-group button {
+                flex: 1;
+            }
+
+            .form-group .gender {
+                margin-top: 0;
+            }
+        }
+
+        /* 输入框优化 */
+        input[type="text"],
+        input[type="password"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="date"] {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            height: 44px;
+        }
+
+        /* 日期选择器优化 */
+        input[type="date"] {
+            min-height: 44px;
+        }
+
+        /* 按钮点击效果 */
+        button {
+            -webkit-tap-highlight-color: transparent;
         }
     </style>
 </head>
+
 <body>
 
-<header>
-    <h1>众策弈城 新用户注册</h1>
-</header>
+    <header>
+        <h1>众策弈城 新用户注册</h1>
+    </header>
 
-<div class="form-container">
-    <form action="register.php" method="POST">
-        <?php if (isset($error)): ?>
-            <p class="error"><?= $error; ?></p>
-        <?php elseif (isset($success)): ?>
-            <p class="success"><?= $success; ?></p>
-        <?php endif; ?>
+    <div class="form-container">
+        <form action="register.php" method="POST">
+            <?php if (isset($error)): ?>
+                <p class="error"><?= $error; ?></p>
+            <?php elseif (isset($success)): ?>
+                <p class="success"><?= $success; ?></p>
+            <?php endif; ?>
 
-        <div class="form-group">
-            <label for="username">用户名</label>
-            <input type="text" name="username" id="username" placeholder="请输入账号" required>
-        </div>
-
-        <div class="form-group">
-            <label for="password">密码</label>
-            <input type="password" name="password" id="password" placeholder="请输入密码" required>
-        </div>
-
-        <div class="form-group">
-            <label for="realname">姓名</label>
-            <input type="text" name="realname" id="realname" placeholder="请输入真实姓名" required>
-        </div>
-
-        <div class="form-group">
-            <label for="mail">邮箱</label>
-            <input type="email" name="mail" id="mail" placeholder="请输入邮箱" required>
-        </div>
-
-        <div class="form-group">
-            <label for="phone">手机号</label>
-            <input type="tel" name="phone" id="phone" placeholder="请输入您的手机号" required>
-        </div>
-
-        <div class="form-group">
-            <label>性别</label>
-            <div class="gender">
-                <label><input type="radio" name="gender" value="male"> 男</label>
-                <label><input type="radio" name="gender" value="female"> 女</label>
+            <div class="form-group">
+                <label for="username">用户名</label>
+                <input type="text" name="username" id="username" placeholder="请输入账号" required>
             </div>
-        </div>
 
-        <div class="form-group">
-            <label for="birth">出生日期</label>
-            <input type="date" name="birth" id="birth" value="2000-01-01" required>
-        </div>
+            <div class="form-group">
+                <label for="password">密码</label>
+                <input type="password" name="password" id="password" placeholder="请输入密码" required>
+            </div>
 
-        <div class="form-group">
-            <button type="submit">注册</button>
-        </div>
+            <div class="form-group">
+                <label for="realname">姓名</label>
+                <input type="text" name="realname" id="realname" placeholder="请输入真实姓名" required>
+            </div>
 
-        <div class="login-link">
-            <a href="./login.php" target="_blank">已有账号？立即登录</a>
-        </div>
-    </form>
-</div>
+            <div class="form-group">
+                <label for="mail">邮箱</label>
+                <input type="email" name="mail" id="mail" placeholder="请输入邮箱" required>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">手机号</label>
+                <input type="tel" name="phone" id="phone" placeholder="请输入您的手机号" required>
+            </div>
+
+            <div class="form-group">
+                <label>性别</label>
+                <div class="gender">
+                    <label><input type="radio" name="gender" value="male"> 男</label>
+                    <label><input type="radio" name="gender" value="female"> 女</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="birth">出生日期</label>
+                <input type="date" name="birth" id="birth" value="2000-01-01" required>
+            </div>
+
+            <div class="form-group">
+                <button type="submit">注册</button>
+            </div>
+
+            <div class="login-link">
+                <a href="./login.php" target="_blank">已有账号？立即登录</a>
+            </div>
+        </form>
+    </div>
 </body>
-</html>
 
+</html>

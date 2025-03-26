@@ -58,6 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -74,6 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             min-height: 100vh;
             align-items: center;
         }
+
         .form-container {
             background-color: #fff;
             padding: 20px;
@@ -82,10 +84,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             width: 100%;
             max-width: 600px;
         }
+
         .form-container h1 {
             margin-bottom: 20px;
         }
-        .form-container input, .form-container textarea {
+
+        .form-container input,
+        .form-container textarea {
             width: 100%;
             padding: 10px;
             margin: 10px 0;
@@ -93,9 +98,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             border-radius: 5px;
             box-sizing: border-box;
         }
+
         .form-container textarea {
             height: 200px;
         }
+
         .form-container button {
             background-color: #ADD8E6;
             color: #fff;
@@ -104,9 +111,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             cursor: pointer;
             border-radius: 5px;
         }
+
         .form-container button:hover {
             background-color: #6c3483;
         }
+
         /* 上传按钮样式 */
         .upload-btn {
             background-color: #fff;
@@ -120,13 +129,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             cursor: pointer;
             margin-top: 10px;
         }
+
         .upload-btn input[type="file"] {
             display: none;
         }
+
         .upload-btn i {
             color: #888;
             font-size: 20px;
         }
+
         /* 图片预览样式 */
         #preview-img {
             max-width: 100%;
@@ -135,39 +147,41 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     </style>
 </head>
+
 <body>
 
-<div class="form-container">
-    <h1>发布新帖子</h1>
-    <form action="create_post.php" method="post" enctype="multipart/form-data">
-        <input type="text" name="title" placeholder="请输入帖子标题" required>
-        <textarea name="content" placeholder="请输入帖子内容" required></textarea>
+    <div class="form-container">
+        <h1>发布新帖子</h1>
+        <form action="create_post.php" method="post" enctype="multipart/form-data">
+            <input type="text" name="title" placeholder="请输入帖子标题" required>
+            <textarea name="content" placeholder="请输入帖子内容" required></textarea>
 
-        <!-- 上传按钮 -->
-        <label class="upload-btn">
-            <input type="file" name="image" accept="image/*" onchange="previewImage(event)">
-            <i class="fas fa-camera"></i>
-        </label>
+            <!-- 上传按钮 -->
+            <label class="upload-btn">
+                <input type="file" name="image" accept="image/*" onchange="previewImage(event)">
+                <i class="fas fa-camera"></i>
+            </label>
 
-        <!-- 图片预览 -->
-        <img id="preview-img" src="" alt="预览图片" style="display: none;">
+            <!-- 图片预览 -->
+            <img id="preview-img" src="" alt="预览图片" style="display: none;">
 
-        <button type="submit">发布帖子</button>
-    </form>
-</div>
+            <button type="submit">发布帖子</button>
+        </form>
+    </div>
 
-<script>
-    // 图片预览功能
-    function previewImage(event) {
-        var reader = new FileReader();
-        reader.onload = function() {
-            var preview = document.getElementById('preview-img');
-            preview.src = reader.result;
-            preview.style.display = 'block'; // 显示预览图片
-        };
-        reader.readAsDataURL(event.target.files[0]);
-    }
-</script>
+    <script>
+        // 图片预览功能
+        function previewImage(event) {
+            var reader = new FileReader();
+            reader.onload = function() {
+                var preview = document.getElementById('preview-img');
+                preview.src = reader.result;
+                preview.style.display = 'block'; // 显示预览图片
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    </script>
 
 </body>
+
 </html>
